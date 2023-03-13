@@ -20,6 +20,7 @@ k=0
 n=0
 BJtime=[]
 speed=[]
+#数组有多少个就要初始化多少
 lat_1=[0]*2 
 long_1=[0]*2
 lat=[0]*2   #初始化
@@ -34,8 +35,10 @@ with open(filename) as csvfile:
         gps_seconds=float(row[3])
         utc_time=gps_can_api.gps_week_seconds_to_utc(gps_week,gps_seconds,18)#转UTC时间
         BJ_time=gps_can_api.utc_to_local(utc_time)#UTC转北京时间
-        n+=1
-        print(n)
+        #排查数据异常是在哪一行
+        # n+=1
+        # print(n)
+
         #求总距离
         lat_1[k]=float(row[7])#未进行格式转换
         long_1[k]=float(row[8])
@@ -45,24 +48,27 @@ with open(filename) as csvfile:
         rng=gps_can_api.data_convert(lat_1[0],long_1[0],lat_1[1],long_1[1])
         #print(rng)
         #print(BJ_time)
+        #间隔距离；当然也可以相加，但是这样不准确
         if i==1:    #保证初次数据不进行比较
             rng_interval=gps_can_api.data_convert(lat[0],long[0],lat[1],long[1])
-            #rng_interval1=gps_can_api.distVincenty(lat[0],long[0],lat[1],long[1])
+
+            rng_interval1=gps_can_api.distVincenty(lat[0],long[0],lat[1],long[1])
             # rng_interval2=gps_can_api.geodistance(lat[0],long[0],lat[1],long[1])
             # rng_interval3=gps_can_api.distance_range(lat[0],long[0],lat[1],long[1])
-            #print('rng_interval:',rng_interval)
-            #print('rng_interval1:',rng_interval1)
+            # print('rng_interval:',rng_interval)
+            # print('rng_interval1:',rng_interval1)
             # print('rng_interval2:',rng_interval2)
             # print('rng_interval3:',rng_interval3)
             # print('rng_interval:',rng_interval)
             # print('rng_interval1:',rng_interval1)
+            
             ins_speed=rng_interval/0.1*3.6
             j+=0.1
             i=0#保持数据更新
-            if j==0.1:  #时间间隔
+            if j==0.5:  #时间间隔
                 speed.append(rng_interval/0.1*3.6)
                 BJtime.append(BJ_time)
-                print('speed',ins_speed)
+                #print('speed',ins_speed)
                 #print(BJ_time)
                 # print(ins_speed)
                 # print(BJtime)
