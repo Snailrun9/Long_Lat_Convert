@@ -124,53 +124,53 @@ import matplotlib.pyplot as plt
 #导入中文字体，避免显示乱码
 import pylab as mpl
 import numpy as np
-import long_lat_convert
 from datetime import datetime
- 
- 
-    #数据源
-list_count = long_lat_convert.speed
-    #中文乱码问题
-mpl.rcParams['font.sans-serif'] = ['SimHei']
- 
-    # 生成figure对象,相当于准备一个画板
-fig = plt.figure(figsize=(21, 7))
- 
-    # 生成axis对象，相当于在画板上准备一张白纸，111，11表示只有一个表格，
-    #第3个1，表示在第1个表格上画图
-ax = fig.add_subplot(111)
- 
-
-plt.xlabel('时间')
- 
-plt.ylabel('speed')
- 
-    #将字符串的日期，转换成日期对象
-xs =long_lat_convert.BJtime 
-    #日期对象作为参数设置到横坐标,并且使用list_date中的字符串日志作为对象的标签（别名）
-    #x坐标的刻度值
-ar_xticks = np.arange(1, len(long_lat_convert.BJtime )+1, step=1)
-x_data=[]
-for i in xs:
-    data_format=i.strftime('%H:%M:%S.%f')
-    x_data.append(data_format)
-
-#时间格式
-
-#xticks是显示的核心
-plt.xticks(ar_xticks, x_data, rotation=45, fontsize=10)
-plt.yticks(np.arange(0, 100, step=2), fontsize=10)
-ax.plot(ar_xticks, list_count, color='r')
 
  
-    #下方图片显示不完整的问题
-plt.tight_layout()
- 
-    #在点阵上方标明数值
-for x, y in zip(ar_xticks, list_count):
-       plt.text(x, y + 0.3, str(y), ha='center', va='bottom', fontsize=10)
-fig.autofmt_xdate()
-plt.show()
+def gps_radar_viewer(speed0,speed1,BJtime):
+        #数据源
+        #中文乱码问题
+    mpl.rcParams['font.sans-serif'] = ['SimHei']
+    
+        # 生成figure对象,相当于准备一个画板
+    fig = plt.figure(figsize=(18, 8))
+     
+    
+        # 生成axis对象，相当于在画板上准备一张白纸，111，11表示只有一个表格，
+        #第3个1，表示在第1个表格上画图
+    ax = fig.add_subplot(111)
+    plt.xlabel('time')
+    
+    plt.ylabel('speed')
+    
+        #将字符串的日期，转换成日期对象
+
+        #日期对象作为参数设置到横坐标,并且使用list_date中的字符串日志作为对象的标签（别名）
+        #x坐标的刻度值
+    ar_xticks = np.arange(1, len(BJtime)+1, step=1)
+    x_data=[]
+    for i in BJtime:
+        data_format=i.strftime('%H:%M:%S.%f')
+        x_data.append(data_format)
+
+    #时间格式
+
+    #xticks是显示的核心
+    plt.xticks(ar_xticks, x_data, rotation=45, fontsize=10)
+    plt.yticks(np.arange(0, 150, step=5), fontsize=10)
+    ax.plot(ar_xticks,speed0)
+    ax.plot(ar_xticks, speed1, color='r')
+
+    
+        #下方图片显示不完整的问题
+    plt.tight_layout()
+    
+        #在点阵上方标明数值
+    # for x, y in zip(ar_xticks, speed):
+    #        plt.text(x, y + 0.3, str(y), ha='center', va='bottom', fontsize=10)
+    fig.autofmt_xdate()
+    plt.grid()
+    plt.show()
 
 
 
