@@ -16,32 +16,6 @@ def data_convert(lat1,long1,lat2,long2):
     return r
 #https://blog.csdn.net/weixin_42512684/article/details/115843448
 
-# #直线距离
-# from math import sin, asin, cos, radians, fabs, sqrt
- 
-# EARTH_RADIUS = 6371000  # 地球平均半径，6371km
- 
- 
-# def hav(theta):
-#     s = sin(theta / 2)
-#     return s * s
- 
- 
-# def get_distance_hav(lat0, lng0, lat1, lng1):
-#     """用haversine公式计算球面两点间的距离。"""
-#     # 经纬度转换成弧度
-#     lat0 = radians(lat0)
-#     lat1 = radians(lat1)
-#     lng0 = radians(lng0)
-#     lng1 = radians(lng1)
- 
-#     dlng = fabs(lng0 - lng1)
-#     dlat = fabs(lat0 - lat1)
-#     h = hav(dlat) + cos(lat0) * cos(lat1) * hav(dlng)
-#     distance = 2 * EARTH_RADIUS * asin(sqrt(h))
-#     return distance
-
-
 
 def geodistance(lat1,lng1,lat2,lng2):
 #lng1,lat1,lng2,lat2 = (120.12802999999997,30.28708,115.86572000000001,28.7427)
@@ -57,10 +31,6 @@ import math
 from math import radians,cos,sin,asin,sqrt,pi,atan,tan,atan2
 #这个算法和 geographiclib 算的几乎一样，相差<0.2米
 def distVincenty(lat1,lon1,lat2,lon2):
-
-
-
-
     '精度更高的椭球计算,计算两个 WGS84 经纬度点的距离'
     a=6378137.0       #vincentyConstantA(WGS84) ##单位:米
     b=6356752.3142451 #vincentyConstantB(WGS84) ##单位:米
@@ -112,178 +82,7 @@ def distVincenty(lat1,lon1,lat2,lon2):
     return d
 
 
-
-
-
-
-#     #以M为单位显示
-#     # print(geopy.distance.geodesic(coords_1, coords_2).m)
-#     #以KM为单位显示
-#     # print(geopy.distance.geodesic(coords_1, coords_2).km)
-
-
-# def get_gps_start_time(file_name):
-#     f = open(file_name,'r')
-#     for i in range(5):
-#         line = f.readline()
-#     start_time = line[12:]
-#     i = 0
-#     while True:
-#         if start_time[i] == ',':
-#             start_time = float(start_time[0:i]) * 1000
-#             break
-#         else:
-#             i += 1
-#     f.close()
-#     return start_time
-
-
-
-
-
-# def get_csv_row0data(filename,i):
-#     with open(filename, 'r') as csvfile:
-#         reader = csv.reader(csvfile)
-#         row0_i = [row0[i] for row0 in reader]
-#     row0_list = []
-#     for i in range(len(row0_i)):
-#         try:
-#             row0_list.append(float(row0_i[i]))
-#         except:
-#             pass
-#     return row0_list
-
-# def millerToXY(lon, lat):
-
-#     """
-#     经纬度转换为平面坐标系中的x,y 利用米勒坐标系
-#     :param xy_coordinate:
-#     :param lon: 经度
-#     :param lat: 维度
-#     :return:
-#     """
-#     L = 6381372 * math.pi * 2
-#     W = L
-#     H = L / 2
-#     mill = 2.3
-#     x = lon * math.pi / 180
-#     y = lat * math.pi / 180
-#     y = 1.25 * math.log(math.tan(0.25 * math.pi + 0.4 * y))
-#     x = (W / 2) + (W / (2 * math.pi)) * x
-#     y = (H / 2) - (H / (2 * mill)) * y
-#     return [x,y]
-
-
-# def get_gps_origin(file_name):
-#     f = open(file_name,'r')
-
-#     for i in range(5):
-#         line = f.readline()
-
-#     i = 0
-#     star_idx = 0
-#     stop_idx = 0
-#     while True:
-#         if line[i] == ',':
-#             i += 1
-#             if i == 6:
-#                 star_idx = i+1
-#             if i == 7:
-#                 stop_idx = i
-
-#             break
-
-#     f.close()
-#     return 0
-
-
-# # origin = [31.3572173616,118.5302960871]
-# origin = [31.3560760599,118.5365480273]  #[lat,lon]
-
-
-
-# def get_gps_tar_list(file_name):
-#     gps_tar_list = []
-#     gps_frame = get_csv_row0data(file_name, 0)
-#     gps_t = get_csv_row0data(file_name, 3)
-#     gps_lat = get_csv_row0data(file_name, 7)
-#     gps_lon = get_csv_row0data(file_name, 8)
-#     gps_vx = get_csv_row0data(file_name, 10)
-#     gps_vy = get_csv_row0data(file_name, 11)
-
-#     for i in range(len(gps_t)):
-#         # x_0 = origin[0]
-#         # y_0 = origin[1]
-#         # x = millerToXY(gps_lon[i],gps_lat[i])[0]
-#         # y = millerToXY(gps_lon[i],gps_lat[i])[1]
-#         # rng = math.sqrt((x - x_0) ** 2 + (y - y_0) ** 2) - 10
-
-#         lat1 = origin[0]
-#         long1 = origin[1]
-#         lat2 = gps_lat[i]
-#         long2 = gps_lon[i]
-#         rng = get_gps_range(lat1, long1, lat2, long2) - 6
-
-#         rng = float(format(rng, '.2f'))
-#         v = math.sqrt(float(gps_vx[i]) ** 2 + float(gps_vy[i]) ** 2)
-#         t = gps_t[i] * 1000
-#         frame_t = gps_frame[i]
-#         gps_tar_list += [{'t':t,'v':v,'r':rng,'frame':frame_t}]
-#     # print(gps_tar_list)
-#     return gps_tar_list
-
-
-# # 车辆数据
-# def get_can_tar_list(can_data_name):
-#     # can_data_name = filename_no_txt + '-can-data.csv'
-#     can_data = pd.read_csv(can_data_name, encoding='gbk')  # 读取csv文件 gbk防止有中文乱码
-#     can_data_filiter = pd.DataFrame(can_data)
-#     vehicle_speed_frame = can_data_filiter[(can_data_filiter['CanID'] ==168)]
-#     data_filiter_speed = pd.DataFrame( vehicle_speed_frame)
-#     warning_frame_byte0 = data_filiter_speed['Byte0'].to_list()
-#     warning_frame_byte1 = data_filiter_speed['Byte1'].to_list()
-#     warning_frame_byte2 = data_filiter_speed['Byte2'].to_list()
-#     warning_frame_byte3 = data_filiter_speed['Byte3'].to_list()
-#     warning_frame_byte4 = data_filiter_speed['Byte4'].to_list()
-#     warning_frame_byte5 = data_filiter_speed['Byte5'].to_list()
-#     warning_frame_byte6 = data_filiter_speed['Byte6'].to_list()
-#     warning_frame_byte7 = data_filiter_speed['Byte7'].to_list()
-#     can_data_time = data_filiter_speed['Time(ms)'].to_list()
-
-#     speed_h = list(map(lambda x: x *256,warning_frame_byte5))
-#     speed_l = list(map(lambda x: x , warning_frame_byte6))
-#     speed_t = list(map(lambda x: x , can_data_time))
-
-#     real_vehicle_speed=list(map(lambda x,y,t:{'t':t,'v':( x +y)*0.075/3.6},speed_h,speed_l,speed_t))
-
-#     return real_vehicle_speed
-# from geopy.distance import geodesic
-# from scipy.spatial.distance import cdist
-
-# rng_m=geodesic((31.35675381,118.5325003),(31.35675324,118.5325035)).m
-# rng_km=geodesic((31.35675381,118.5325003),(31.35675324,118.5325035)).km
-
-
-
-
-#将GPS时间戳数据批量转化为日期时间
-# import numpy as np
-# import pandas as pd
-# import time
-# def gps_time_convert(data):
-#     #设置Spyder右侧console区的print输出行列数无限制
-#     pd.set_option('display.max_columns', None)
-#     pd.set_option('display.max_row0s', None)
-#     #读取数据储存为结构体类型的数据
-#     data=pd.read_excel('C:/Users/Administrator/Desktop/GPS时间.xlsx') #excel文件的路径，命名为GPS时间.xlsx
-#     print(data)
-#     data.loc[:, 'localminute'] = data['gps_ts'].apply(lambda x :time.localtime(x)) #gps_ts为GPS时间.xlsx的列名，具体见图1
-#     #转换的时间格式为"年-月-日 时:分:秒"
-#     data.loc[:, 'time'] = data['localminute'].apply(lambda x :time.strftime("%Y-%m-%d %H:%M:%S", x))
-#     return data
-# #https://blog.csdn.net/qq_38773993/article/details/118931190
-
-
+#gps时间转换为北京时间
 from datetime import datetime, timedelta
 
 # 闰秒
@@ -326,114 +125,98 @@ def utc_to_local(utc_time):
     return  datetime.fromtimestamp(t)
 
 
-
-
-
-
+#计算两个GPS的距离差
 def gps_speed_convert(filename):
     i=0
     j=0
-    k=0
     BJtime=[]
     speed=[]
     #数组有多少个就要初始化多少
-    lat_1=[0]*2 
-    long_1=[0]*2
+    # lat_1=[0]*2 
+    # long_1=[0]*2
     lat=[0]*2   #初始化
     long=[0]*2
     with open(filename) as csvfile:
         csv_reader = csv.reader(csvfile)
         header =next(csv_reader)
-        for row0 in csv_reader:
-            lat[i]=float(row0[7])#未进行格式转换
-            long[i]=float(row0[8])
-            gps_week=int(row0[2])
-            gps_seconds=float(row0[3])
+        for row in csv_reader:
+            lat[i]=float(row[7])
+            long[i]=float(row[8])
+            gps_week=int(row[2])
+            gps_seconds=float(row[3])
             utc_time=gps_week_seconds_to_utc(gps_week,gps_seconds,18)#转UTC时间
             BJ_time=utc_to_local(utc_time)#UTC转北京时间
-            #排查数据异常是在哪一行
-            # n+=1
-            # print(n)
 
             #求总距离
-            lat_1[k]=float(row0[7])#未进行格式转换
-            long_1[k]=float(row0[8])
-            if k==1:
-                k=0
-            k+=1
-            rng=data_convert(lat_1[0],long_1[0],lat_1[1],long_1[1])
-            #print(rng)
-            #print(BJ_time)
+            # lat_1[k]=float(row[7])
+            # long_1[k]=float(row[8])
+            # if k==1:
+            #     k=0
+            # k+=1
+            # rng=data_convert(lat_1[0],long_1[0],lat_1[1],long_1[1])
+           
             #间隔距离；当然也可以相加，但是这样不准确
-            if i==1:    #保证初次数据不进行比较
+            if i==1:                        #保证初次数据不进行比较
                 rng_interval=data_convert(lat[0],long[0],lat[1],long[1])
 
-                rng_interval1=distVincenty(lat[0],long[0],lat[1],long[1])
-                # rng_interval2=gps_radar_api.geodistance(lat[0],long[0],lat[1],long[1])
-                # rng_interval3=gps_radar_api.distance_range(lat[0],long[0],lat[1],long[1])
-                # print('rng_interval:',rng_interval)
-                # print('rng_interval1:',rng_interval1)
-                # print('rng_interval2:',rng_interval2)
-                # print('rng_interval3:',rng_interval3)
+                #几种数据计算方式对比
+                #rng_interval1=distVincenty(lat[0],long[0],lat[1],long[1])
                 # print('rng_interval:',rng_interval)
                 # print('rng_interval1:',rng_interval1)
                 
-                ins_speed=rng_interval/0.1*3.6
-                j+=0.1
-                i=0#保持数据更新
-                if j==0.1:  #时间间隔
+                j+=0.1                      #设置间隔
+                i=0                         #保持数据更新
+                if j==0.1:                  #时间间隔
                     speed.append(rng_interval/0.1*3.6)
                     BJtime.append(BJ_time)
-                    #print('speed',ins_speed)
-                    #print(BJ_time)
-                    # print(ins_speed)
-                    # print(BJtime)
                     j=0
-                lat[0]=lat[1]
+                lat[0]=lat[1]               #数据替换，保持两两做差
                 long[0]=long[1]
-                #print(BJtime)
-                #print(speed)
             i+=1
     return speed,BJtime
 
-
-
-
+#计算雷达的速度，方便添加到新的csv文件中
 def radar_speed_convert(filename):
     speed=[]
     with open(filename) as csvfile:
         csv_reader = csv.reader(csvfile)
         header =next(csv_reader)
-        for row0 in csv_reader:
-            speed.append(float(row0[3])) 
+        for row in csv_reader:
+            speed.append(float(row[3])) 
     return speed
 
 
+def gps_range_delt(filename0,filename1):
+     rng_delt=[]
+     BJtime0=[]
+     BJtime1=[]
 
-def gps_range_delt(filename,filename1):
-    rng_delt=[]
-    BJ_time0=[]
-    BJ_time1=[]
-    with open(filename) as csvfile0,open(filename1) as csvfile1:
+     with open(filename0) as csvfile0,open(filename1) as csvfile1:
         csv_reader0 = csv.reader(csvfile0)
-        csv_reader1 =csv.reader(csvfile1)
-        header1 =next(csv_reader0)
-        header2 =next(csv_reader1)
+        header =next(csv_reader0)
+        csv_reader1 = csv.reader(csvfile1)
+        header =next(csv_reader1)
         for row0 in csv_reader0:
             for row1 in csv_reader1:
-                lat=float(row0[7])
-                long=float(row0[8])
-                lat_1=float(row1[7])
-                long_1=float(row1[8])
+                lat0=float(row0[7])
+                long0=float(row0[8])
+                lat1 =float(row1[7])
+                long1=float(row1[8])
+                #时间计算
                 gps_week0=int(row0[2])
                 gps_seconds0=float(row0[3])
+                utc_time0=gps_week_seconds_to_utc(gps_week0,gps_seconds0,18)#转UTC时间
+                BJ_time0=utc_to_local(utc_time0)#UTC转北京时间
+
                 gps_week1=int(row1[2])
                 gps_seconds1=float(row1[3])
-                utc_time0=gps_week_seconds_to_utc(gps_week0,gps_seconds0,18)#转UTC时间
-                BJ_time0.append(utc_to_local(utc_time0))#UTC转北京时间
                 utc_time1=gps_week_seconds_to_utc(gps_week1,gps_seconds1,18)#转UTC时间
-                BJ_time1.append(utc_to_local(utc_time1))#UTC转北京时间
-                rng_delt.append(data_convert(lat,long,lat_1,long_1))
-    return rng_delt,BJ_time0,BJ_time1
+                BJ_time1=utc_to_local(utc_time1)#UTC转北京时间
+
+                #距离计算
+                rng_delt.append(data_convert(lat0,long0,lat1,long1))
+                BJtime0.append(BJ_time0)
+                BJtime1.append(BJ_time1)
+        return rng_delt,BJtime0,BJtime1
 
 
