@@ -125,7 +125,7 @@ def utc_to_local(utc_time):
     return  datetime.fromtimestamp(t)
 
 
-#计算两个GPS的距离差
+#计算速度
 def gps_speed_convert(filename):
     i=0
     j=0
@@ -185,7 +185,7 @@ def radar_speed_convert(filename):
             speed.append(float(row[3])) 
     return speed
 
-
+#计算两个gps距离差
 def gps_range_delt(filename0,filename1):
      rng_delt=[]
      BJtime0=[]
