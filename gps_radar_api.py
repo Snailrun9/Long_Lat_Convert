@@ -141,17 +141,17 @@ def distVincenty(lat1,lon1,lat2,lon2):
 
 
 
-# def get_csv_rowdata(filename,i):
+# def get_csv_row0data(filename,i):
 #     with open(filename, 'r') as csvfile:
 #         reader = csv.reader(csvfile)
-#         row_i = [row[i] for row in reader]
-#     row_list = []
-#     for i in range(len(row_i)):
+#         row0_i = [row0[i] for row0 in reader]
+#     row0_list = []
+#     for i in range(len(row0_i)):
 #         try:
-#             row_list.append(float(row_i[i]))
+#             row0_list.append(float(row0_i[i]))
 #         except:
 #             pass
-#     return row_list
+#     return row0_list
 
 # def millerToXY(lon, lat):
 
@@ -204,12 +204,12 @@ def distVincenty(lat1,lon1,lat2,lon2):
 
 # def get_gps_tar_list(file_name):
 #     gps_tar_list = []
-#     gps_frame = get_csv_rowdata(file_name, 0)
-#     gps_t = get_csv_rowdata(file_name, 3)
-#     gps_lat = get_csv_rowdata(file_name, 7)
-#     gps_lon = get_csv_rowdata(file_name, 8)
-#     gps_vx = get_csv_rowdata(file_name, 10)
-#     gps_vy = get_csv_rowdata(file_name, 11)
+#     gps_frame = get_csv_row0data(file_name, 0)
+#     gps_t = get_csv_row0data(file_name, 3)
+#     gps_lat = get_csv_row0data(file_name, 7)
+#     gps_lon = get_csv_row0data(file_name, 8)
+#     gps_vx = get_csv_row0data(file_name, 10)
+#     gps_vy = get_csv_row0data(file_name, 11)
 
 #     for i in range(len(gps_t)):
 #         # x_0 = origin[0]
@@ -273,7 +273,7 @@ def distVincenty(lat1,lon1,lat2,lon2):
 # def gps_time_convert(data):
 #     #设置Spyder右侧console区的print输出行列数无限制
 #     pd.set_option('display.max_columns', None)
-#     pd.set_option('display.max_rows', None)
+#     pd.set_option('display.max_row0s', None)
 #     #读取数据储存为结构体类型的数据
 #     data=pd.read_excel('C:/Users/Administrator/Desktop/GPS时间.xlsx') #excel文件的路径，命名为GPS时间.xlsx
 #     print(data)
@@ -344,11 +344,11 @@ def gps_speed_convert(filename):
     with open(filename) as csvfile:
         csv_reader = csv.reader(csvfile)
         header =next(csv_reader)
-        for row in csv_reader:
-            lat[i]=float(row[7])#未进行格式转换
-            long[i]=float(row[8])
-            gps_week=int(row[2])
-            gps_seconds=float(row[3])
+        for row0 in csv_reader:
+            lat[i]=float(row0[7])#未进行格式转换
+            long[i]=float(row0[8])
+            gps_week=int(row0[2])
+            gps_seconds=float(row0[3])
             utc_time=gps_week_seconds_to_utc(gps_week,gps_seconds,18)#转UTC时间
             BJ_time=utc_to_local(utc_time)#UTC转北京时间
             #排查数据异常是在哪一行
@@ -356,8 +356,8 @@ def gps_speed_convert(filename):
             # print(n)
 
             #求总距离
-            lat_1[k]=float(row[7])#未进行格式转换
-            long_1[k]=float(row[8])
+            lat_1[k]=float(row0[7])#未进行格式转换
+            long_1[k]=float(row0[8])
             if k==1:
                 k=0
             k+=1
@@ -381,7 +381,7 @@ def gps_speed_convert(filename):
                 ins_speed=rng_interval/0.1*3.6
                 j+=0.1
                 i=0#保持数据更新
-                if j==0.5:  #时间间隔
+                if j==0.1:  #时间间隔
                     speed.append(rng_interval/0.1*3.6)
                     BJtime.append(BJ_time)
                     #print('speed',ins_speed)
@@ -404,8 +404,36 @@ def radar_speed_convert(filename):
     with open(filename) as csvfile:
         csv_reader = csv.reader(csvfile)
         header =next(csv_reader)
-        for row in csv_reader:
-            speed.append(float(row[3])) 
+        for row0 in csv_reader:
+            speed.append(float(row0[3])) 
     return speed
+
+
+
+def gps_range_delt(filename,filename1):
+    rng_delt=[]
+    BJ_time0=[]
+    BJ_time1=[]
+    with open(filename) as csvfile0,open(filename1) as csvfile1:
+        csv_reader0 = csv.reader(csvfile0)
+        csv_reader1 =csv.reader(csvfile1)
+        header1 =next(csv_reader0)
+        header2 =next(csv_reader1)
+        for row0 in csv_reader0:
+            for row1 in csv_reader1:
+                lat=float(row0[7])
+                long=float(row0[8])
+                lat_1=float(row1[7])
+                long_1=float(row1[8])
+                gps_week0=int(row0[2])
+                gps_seconds0=float(row0[3])
+                gps_week1=int(row1[2])
+                gps_seconds1=float(row1[3])
+                utc_time0=gps_week_seconds_to_utc(gps_week0,gps_seconds0,18)#转UTC时间
+                BJ_time0.append(utc_to_local(utc_time0))#UTC转北京时间
+                utc_time1=gps_week_seconds_to_utc(gps_week1,gps_seconds1,18)#转UTC时间
+                BJ_time1.append(utc_to_local(utc_time1))#UTC转北京时间
+                rng_delt.append(data_convert(lat,long,lat_1,long_1))
+    return rng_delt,BJ_time0,BJ_time1
 
 
