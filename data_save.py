@@ -15,6 +15,6 @@ def data_save(BJtime,Range_delt,Speed):
     dataframe = pd.DataFrame({'BJtime':a,'Range_delt':b,'Speed':c})
 
     #将DataFrame存储为csv,index表示是否显示行名，default=True
-    dataframe.to_csv(r"D:\File\test_range_delt.csv",sep=',')   #这个地方需要自己先建一个csv文件，然后把路径复制进来，例如 dataframe.to_csv(r"F:\test2.csv",sep=',')
+    dataframe.to_csv(r"D:\File\Radar\20230310\Range_Speed\来向_90.csv",sep=',')   #这个地方需要自己先建一个csv文件，然后把路径复制进来，例如 dataframe.to_csv(r"F:\test2.csv",sep=',')
 
     # https://blog.csdn.net/weixin_43245453/article/details/90054820

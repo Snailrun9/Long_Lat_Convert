@@ -15,7 +15,7 @@ def data_convert(lat1,long1,lat2,long2):
     r = distance.distance(coords_1, coords_2).m
     return r
 #https://blog.csdn.net/weixin_42512684/article/details/115843448
-
+#https://www.osgeo.cn/geopy/#geopy.distance.Distance
 
 def geodistance(lat1,lng1,lat2,lng2):
 #lng1,lat1,lng2,lat2 = (120.12802999999997,30.28708,115.86572000000001,28.7427)
@@ -218,5 +218,9 @@ def gps_range_delt(filename0,filename1):
                 BJtime0.append(BJ_time0)
                 BJtime1.append(BJ_time1)
         return rng_delt,BJtime0,BJtime1
+     
+
+#GPS数据提取
+
 
 
